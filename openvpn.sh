@@ -86,7 +86,7 @@ timezone() { local timezone="${1:-EST5EDT}"
 #   pass) password on VPN
 #   port) port to connect to VPN (optional)
 # Return: configured .ovpn file
-vpn() { local server="$1" user="$2" pass="$3" port="${4:-1194}" \
+vpn() { local server="$1" user="$2" pass="$3" port="${4:-1198}" \
             conf="/vpn/vpn.conf" auth="/vpn/vpn.auth" i
 
     echo "client" >$conf
@@ -100,6 +100,11 @@ vpn() { local server="$1" user="$2" pass="$3" port="${4:-1194}" \
     echo "keepalive 10 30" >>$conf
     echo "nobind" >>$conf
     echo "persist-key" >>$conf
+    echo "persist-tun" >>$conf
+    echo "cipher aes-128-cbc" >>$conf
+    echo "auth sha1" >>$conf
+    echo "crl-verify /vpn/vpn-ca.pem" >>$conf
+    echo "disable-occ" >>$conf
     echo "ca /vpn/vpn-ca.crt" >>$conf
     echo "tls-client" >>$conf
     echo "remote-cert-tls server" >>$conf
